@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
             $manageUserPermission,
             $upvoteDownvotesPermission,
             $manageFeaturesPermission,
+            $manageCommentsPermission
         ]);
 
         User::factory()->create([
