@@ -28,17 +28,16 @@ class UpvoteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Feature $feature)
     {
         // dd($request->all());
         $data = $request->validate([
-            'feature_id' => ['required', 'exists:feature,id'],
-            'Upvotes' => ['required', 'boolean']
+            'upvote' => ['required', 'boolean']
         ]);
 
         Upvotes::updateOrCreate(
-            ['feature_id' => $data['feature_id'], 'user_id' => auth()->id()],
-            ['Upvotes' => $data['Upvotes']]
+            ['feature_id' => $feature->id, 'user_id' => auth()->id()],
+            ['upvote' => $data['upvote']]
         );
 
         return to_route('feature.index');

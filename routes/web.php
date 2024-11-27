@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::post('/feature/{feature}/upvote', [UpvoteController::class, 'store'])->name('upvote.store');
-    Route::delete('/feature/{feature}', [UpvoteController::class, 'destroy'])->name('upvote.delete');
+    Route::delete('/feature/{feature}', [UpvoteController::class, 'destroy'])->name('feature.destroy');
 });
 
 require __DIR__ . '/auth.php';
