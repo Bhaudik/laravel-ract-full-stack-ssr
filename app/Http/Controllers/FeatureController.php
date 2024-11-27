@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\FeatureResoursce;
 use App\Models\Feature;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class FeatureController extends Controller
 {
@@ -12,7 +14,11 @@ class FeatureController extends Controller
      */
     public function index()
     {
-        //
+        $paginated = Feature::latest()->paginate();
+        return Inertia::render("Feature/Index", [
+            "features" => FeatureResoursce::collection($paginated)
+
+        ]);
     }
 
     /**
