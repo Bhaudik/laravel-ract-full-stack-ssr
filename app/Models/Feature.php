@@ -11,6 +11,12 @@ class Feature extends Model
 {
 
     use HasFactory;
+
+    protected $fillable = [
+        "name",
+        "description",
+        "user_id",
+    ];
     /**
      * Get all of the upvote for the Feature
      *
