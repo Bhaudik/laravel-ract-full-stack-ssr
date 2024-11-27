@@ -8,18 +8,19 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Feature, paginatedData } from "@/types";
 import { Description, Transition } from "@headlessui/react";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { features } from "process";
 import { FormEventHandler, useState } from "react";
 
-export default function show() {
-    const { data, setData, processing, errors, post } = useForm({
-        name: "",
-        description: "",
+export default function show({ feature }: { feature: Feature }) {
+    const { data, setData, processing, errors, put } = useForm({
+        name: feature.name,
+        description: feature.description,
     });
 
     const createFeature: FormEventHandler = (ev) => {
         ev.preventDefault();
 
-        post(route("feature.store"), {
+        put(route("feature.update", feature.id), {
             preserveScroll: true,
         });
     };
@@ -27,11 +28,11 @@ export default function show() {
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Create New Feature
+                    Edit Feature <b>"{feature.name}"</b>
                 </h2>
             }
         >
-            <Head title={"Create New Feature"} />
+            <Head title={" Edit Feature " + feature.name} />
             <div className="mb-4 overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
                 <div className="p-6 text-gray-900 dark:text-gray-100 flex gap-8">
                     <form onSubmit={createFeature} className="w-full">
@@ -66,8 +67,8 @@ export default function show() {
                                 />
 
                                 <TextAreaInput
-                                    id="description"
                                     rows={6}
+                                    id="description"
                                     className="mt-1 block w-full"
                                     value={data.description}
                                     onChange={(e) =>

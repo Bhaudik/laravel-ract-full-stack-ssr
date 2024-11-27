@@ -16,12 +16,17 @@ class FeatureResoursce extends JsonResource
     public function toArray(Request $request): array
     {
 
+        // dd($this);
         return [
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
             'user' => new UserResoursce($this->user),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'upvote_count' => $this->upvote_count,
+            'user_has_upvoted' => $this->user_has_upvoted,
+            'user_has_downvoted' => $this->user_has_downvoted,
+
         ];
     }
 }

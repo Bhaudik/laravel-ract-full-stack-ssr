@@ -4,7 +4,7 @@ import { Feature, paginatedData } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Index({ feature }: { feature: Feature }) {
+export default function Show({ feature }: { feature: Feature }) {
     console.log(feature);
 
     return (
