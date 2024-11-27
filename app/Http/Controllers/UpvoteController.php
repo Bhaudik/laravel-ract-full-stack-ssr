@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Upvote;
+use App\Models\Feature;
+use App\Models\Upvotes;
+
 use Illuminate\Http\Request;
 
 class UpvoteController extends Controller
@@ -28,13 +30,24 @@ class UpvoteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+        $data = $request->validate([
+            'feature_id' => ['required', 'exists:feature,id'],
+            'Upvotes' => ['required', 'boolean']
+        ]);
+
+        Upvotes::updateOrCreate(
+            ['feature_id' => $data['feature_id'], 'user_id' => auth()->id()],
+            ['Upvotes' => $data['Upvotes']]
+        );
+
+        return to_route('feature.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Upvote $upvote)
+    public function show(Upvotes $Upvotes)
     {
         //
     }
@@ -42,7 +55,7 @@ class UpvoteController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Upvote $upvote)
+    public function edit(Upvotes $Upvotes)
     {
         //
     }
@@ -50,7 +63,7 @@ class UpvoteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Upvote $upvote)
+    public function update(Request $request, Upvotes $Upvotes)
     {
         //
     }
@@ -58,8 +71,10 @@ class UpvoteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Upvote $upvote)
+    public function destroy(Feature $feature)
     {
-        //
+        $feature->upvotes()->where('user_id', auth()->id())->delete();
+
+        return back();
     }
 }
