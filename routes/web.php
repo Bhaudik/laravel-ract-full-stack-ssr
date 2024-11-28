@@ -9,21 +9,21 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-// Route::redirect('/', '/dashboard');
+Route::redirect('/', '/dashboard');
 
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 
 
@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::middleware(['verified'])->group(function () {
+    Route::middleware(['verified', 'role:' . \App\Enum\RolesEnum::User->value])->group(function () {
         Route::get('/dashboard', function () {
             return Inertia::render(component: 'Dashboard');
         })->name('dashboard');
@@ -58,7 +58,9 @@ Route::middleware('auth')->group(function () {
             ->middleware('can:' . \App\Enum\PermissionsEnum::ManageFeatures->value);
 
 
-        Route::post('/feature/{feature}/upvote', [UpvoteController::class, 'store'])->name('upvote.store');
+        Route::post('/feature/{feature}/upvote', [UpvoteController::class, 'store'])->name('upvote.store')
+            // ->middleware('can:'. \App\Enum\PermissionsEnum::UpvoteDownvotes->value);
+        ;
         Route::delete('upvote/feature/{feature}', [UpvoteController::class, 'destroy'])->name('upvote.feature.destroy');
 
         Route::post('/feature/{feature}/comments', [CommentController::class, 'store'])->name('comment.store')->middleware('can:' . \App\Enum\PermissionsEnum::ManageCommentes->value);
