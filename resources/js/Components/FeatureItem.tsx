@@ -43,6 +43,14 @@ export default function FeatureItem({ feature }: { feature: Feature }) {
                     {(feature.description || "").length <= 200 && (
                         <p>{feature.description}</p>
                     )}
+                    <div className="py-4">
+                        <Link
+                            href={route("feature.show", feature)}
+                            className="max-w-md mx-auto p-4 bg-white text-black font-semibold shadow-md rounded-lg"
+                        >
+                            Comments
+                        </Link>
+                    </div>
                 </div>
                 <div>
                     <FeatureActionDeopdown feature={feature} />

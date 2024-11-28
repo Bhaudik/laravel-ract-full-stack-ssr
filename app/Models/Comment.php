@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
+
+    protected $fillable = [
+        "comment",
+        "feature_id",
+        "user_id"
+    ];
     /**
      * Get the user that owns the Comment
      *
@@ -14,7 +20,7 @@ class Comment extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'foreign_key', 'other_key');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -22,8 +28,9 @@ class Comment extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function feature(): BelongsTo
+
+    public function feature()
     {
-        return $this->belongsTo(Feature::class, 'foreign_key', 'other_key');
+        return $this->belongsTo(Feature::class);
     }
 }

@@ -40,7 +40,7 @@ class UpvoteController extends Controller
             ['upvote' => $data['upvote']]
         );
 
-        return to_route('feature.index');
+        return back();
     }
 
     /**

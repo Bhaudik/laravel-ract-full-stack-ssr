@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Feature;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -26,9 +27,17 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Feature $feature)
     {
-        //
+        $data = $request->validate([
+            'comment' => 'required'
+        ]);
+
+        $data['feature_id'] = $feature->id;
+        $data['user_id'] = auth()->id();
+        Comment::create($data);
+
+        return to_route('feature.show', $feature);
     }
 
     /**
@@ -60,6 +69,10 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        // dd('sdfdjsjfdk' . $comment->id);
+        $feature_id = $comment->feature_id;
+        $comment->delete();
+
+        return to_route('feature.show', $feature_id);
     }
 }

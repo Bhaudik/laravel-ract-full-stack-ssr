@@ -17,7 +17,7 @@ export default function FeatureUpvoteDownvote({
             (feature.user_has_downvoted && !upvote) ||
             (feature.user_has_upvoted && upvote)
         ) {
-            upvoteForm.delete(route("feature.destroy", feature.id), {
+            upvoteForm.delete(route("upvote.feature.destroy", feature.id), {
                 preserveScroll: true,
             });
         } else {

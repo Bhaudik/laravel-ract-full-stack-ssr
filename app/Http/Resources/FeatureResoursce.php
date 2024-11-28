@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -26,6 +27,15 @@ class FeatureResoursce extends JsonResource
             'upvote_count' => $this->upvote_count,
             'user_has_upvoted' => $this->user_has_upvoted,
             'user_has_downvoted' => $this->user_has_downvoted,
+            'comments' => $this->comments->map(function ($comment) {
+                return [
+                    'id' => $comment->id,
+                    'comment' => $comment->comment,
+                    'feature_id' => $comment->feature_id,
+                    'created_at' => $comment->created_at->format('Y-m-d H:i:s'),
+                    'user' => new UserResoursce($comment->user),
+                ];
+            })
 
         ];
     }

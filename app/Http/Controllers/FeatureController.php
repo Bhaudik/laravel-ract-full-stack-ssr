@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\FeatureListResoursce;
 use App\Http\Resources\FeatureResoursce;
+use App\Models\Comment;
 use App\Models\Feature;
 use App\Models\Upvotes;
 use DB;
@@ -18,6 +19,7 @@ class FeatureController extends Controller
      */
     public function index()
     {
+
         $currentuUserId = auth()->id();
         $paginated = Feature::latest()
             ->withCount(['upvotes as upvote_count' => function ($query) {
@@ -124,4 +126,15 @@ class FeatureController extends Controller
         $feature->delete();
         return to_route('feature.index')->with('success', 'Feature deleted Successfully');
     }
+
+    public function deleteComment(Comment $comment)
+    {
+        // dd('sdfdjsjfdk' . $comment->id);
+        $feature_id = $comment->feature_id;
+        $comment->delete();
+
+        return to_route('feature.show', $feature_id);
+    }
+
+    
 }

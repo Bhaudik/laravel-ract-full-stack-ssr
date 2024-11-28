@@ -26,9 +26,9 @@ class Feature extends Model
     {
         return $this->hasMany(Upvotes::class);
     }
-    public function comment(): HasMany
+    public function comments(): HasMany
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)->latest();
     }
     /**
      * Get the user that owns the Feature

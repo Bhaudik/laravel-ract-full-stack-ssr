@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UpvoteController;
@@ -21,10 +22,13 @@ Route::middleware('auth')->group(function () {
 
         // Route::get('Feature/Index', [FeatureController::class, 'index'])->name('feature.index');
         Route::resource('feature',  FeatureController::class);
-    });
 
-    Route::post('/feature/{feature}/upvote', [UpvoteController::class, 'store'])->name('upvote.store');
-    Route::delete('/feature/{feature}', [UpvoteController::class, 'destroy'])->name('feature.destroy');
+        Route::post('/feature/{feature}/upvote', [UpvoteController::class, 'store'])->name('upvote.store');
+        Route::delete('upvote/feature/{feature}', [UpvoteController::class, 'destroy'])->name('upvote.feature.destroy');
+
+        Route::post('/feature/{feature}/comments', [CommentController::class, 'store'])->name('comment.store');
+        Route::any('/delete/comment/{comment}', [FeatureController::class, 'deleteComment'])->name('feature.comment.destroy');
+    });
 });
 
 require __DIR__ . '/auth.php';

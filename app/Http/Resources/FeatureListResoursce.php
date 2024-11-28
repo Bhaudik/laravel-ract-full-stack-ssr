@@ -27,7 +27,6 @@ class FeatureListResoursce extends JsonResource
             'upvote_count' => $this->upvote_count,
             'user_has_upvoted' => $this->user_has_upvoted,
             'user_has_downvoted' => $this->user_has_downvoted,
-
         ];
     }
 }
