@@ -69,6 +69,9 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
+        if ($comment->user_id != auth()->id()) {
+            abort(403);
+        }
         // dd('sdfdjsjfdk' . $comment->id);
         $feature_id = $comment->feature_id;
         $comment->delete();
