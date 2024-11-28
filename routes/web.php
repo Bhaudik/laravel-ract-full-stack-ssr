@@ -1,10 +1,12 @@
 <?php
 
 use App\Enum\PermissionsEnum;
+use App\Enum\RolesEnum;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UpvoteController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -46,7 +48,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::middleware(['verified', 'role:' . \App\Enum\RolesEnum::User->value])->group(function () {
+    Route::middleware([
+        'verified',
+        sprintf(
+            'role:%s|%s|%s|',
+            'role:' . RolesEnum::User->value,
+            RolesEnum::Admin->value,
+            RolesEnum::Commenter->value
+        )
+    ])->group(function () {
         Route::get('/dashboard', function () {
             return Inertia::render(component: 'Dashboard');
         })->name('dashboard');
@@ -66,6 +76,17 @@ Route::middleware('auth')->group(function () {
         Route::post('/feature/{feature}/comments', [CommentController::class, 'store'])->name('comment.store')->middleware('can:' . \App\Enum\PermissionsEnum::ManageCommentes->value);
 
         Route::delete('/delete/comment/{comment}', [CommentController::class, 'destroy'])->name('feature.comment.destroy')->middleware('can:' . \App\Enum\PermissionsEnum::ManageCommentes->value);
+
+        Route::middleware(['verified', 'role:' . \App\Enum\RolesEnum::Admin->value])->group(
+            function () {
+                Route::get('User/Index', [UserController::class, 'index'])
+                    ->name('user.index');
+                Route::get('User/{user}/Edit', [UserController::class, 'edit'])
+                    ->name('user.edit');
+                Route::put('User/{user}', [UserController::class, 'update'])
+                    ->name('users.update');
+            }
+        );
     });
 });
 

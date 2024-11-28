@@ -37,11 +37,11 @@ export function FeatureActionDeopdown({ feature }: { feature: Feature }) {
             <Dropdown.Content>
                 {/* {can(user, "edit_features") &&  */}
 
-                {hasRole(user, "Admin") && (
-                    <Dropdown.Link href={route("feature.edit", feature.id)}>
-                        Edit Feature
-                    </Dropdown.Link>
-                )}
+                {/* {hasRole(user, "Admin") && ( */}
+                <Dropdown.Link href={route("feature.edit", feature.id)}>
+                    Edit Feature
+                </Dropdown.Link>
+                {/* )} */}
                 {/* } */}
                 {/* {can(user, "delete_features") && ( */}
                 <Dropdown.Link
