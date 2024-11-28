@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
         'verified',
         sprintf(
             'role:%s|%s|%s|',
-            'role:' . RolesEnum::User->value,
+            RolesEnum::User->value,
             RolesEnum::Admin->value,
             RolesEnum::Commenter->value
         )
@@ -61,12 +61,12 @@ Route::middleware('auth')->group(function () {
             return Inertia::render(component: 'Dashboard');
         })->name('dashboard');
 
-        Route::get('Feature/Index', [FeatureController::class, 'index'])->name('feature.index');
-        Route::get('Feature/{feature}', [FeatureController::class, 'show'])->name('feature.show');
         Route::resource('feature',  FeatureController::class)
             ->except(['index', 'show'])
             ->middleware('can:' . \App\Enum\PermissionsEnum::ManageFeatures->value);
 
+        Route::get('Feature/Index', [FeatureController::class, 'index'])->name('feature.index');
+        Route::get('Feature/{feature}', [FeatureController::class, 'show'])->name('feature.show');
 
         Route::post('/feature/{feature}/upvote', [UpvoteController::class, 'store'])->name('upvote.store')
             // ->middleware('can:'. \App\Enum\PermissionsEnum::UpvoteDownvotes->value);
